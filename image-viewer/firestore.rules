@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Segédfüggvények
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    // Felhasználói profilok - csak a saját profilt lehet írni/olvasni
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId);
+    }
+    
+    // Képek gyűjtemény - csak bejelentkezett felhasználók olvashatnak/írhatnak
+    match /images/{imageId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+    
+    // Fizetési tranzakciók - csak a saját tranzakciókat lehet olvasni
+    match /payments/{paymentId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      // Update/delete csak admin vagy backend által
+      allow update, delete: if false;
+    }
+    
+    // Minden más tiltva (alapértelmezett biztonság)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

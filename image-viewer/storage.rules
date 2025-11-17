@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Segédfüggvények
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    // Fájlméret és típus validáció képekhez
+    function isValidImage() {
+      return request.resource.size < 10 * 1024 * 1024 // Max 10MB
+          && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Felhasználói képek - users/{userId}/images/{imageId}
+    // Csak a saját mappájába tölthet fel képeket
+    match /users/{userId}/images/{imageId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(userId) && isValidImage();
+      allow delete: if isOwner(userId);
+    }
+    
+    // Profilképek - users/{userId}/profile/{fileName}
+    match /users/{userId}/profile/{fileName} {
+      allow read: if true; // Profilképek publikusan olvashatók
+      allow write: if isOwner(userId) && isValidImage();
+      allow delete: if isOwner(userId);
+    }
+    
+    // Publikus képek mappa (ha van ilyen használat)
+    match /public/{imageId} {
+      allow read: if true;
+      allow write: if isSignedIn() && isValidImage();
+      allow delete: if isSignedIn();
+    }
+    
+    // Minden más tiltva (alapértelmezett biztonság)
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
