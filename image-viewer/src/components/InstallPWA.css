@@ -1,0 +1,44 @@
+.install-pwa-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 100%);
+  border: none;
+  border-radius: 24px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.3);
+}
+
+.install-pwa-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+}
+
+.install-pwa-button:active {
+  transform: translateY(0);
+}
+
+.install-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.install-text {
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .install-pwa-button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .install-icon {
+    font-size: 16px;
+  }
+}

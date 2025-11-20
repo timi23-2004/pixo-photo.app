@@ -13,7 +13,7 @@ export default function Login({ onToggle }) {
     e.preventDefault();
     
     if (!email || !password) {
-      setError('Kérlek töltsd ki az összes mezőt');
+      setError('Please fill all fields');
       return;
     }
 
@@ -32,22 +32,22 @@ export default function Login({ onToggle }) {
   const getErrorMessage = (code) => {
     switch (code) {
       case 'auth/invalid-email':
-        return 'Érvénytelen email cím';
+        return 'Invalid email address';
       case 'auth/user-not-found':
-        return 'Nincs ilyen felhasználó';
+        return 'User not found';
       case 'auth/wrong-password':
-        return 'Hibás jelszó';
+        return 'Wrong password';
       case 'auth/invalid-credential':
-        return 'Hibás email vagy jelszó';
+        return 'Invalid email or password';
       default:
-        return 'Hiba történt a bejelentkezés során';
+        return 'Login failed';
     }
   };
 
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Bejelentkezés</h2>
+        <h2>Login</h2>
         {error && <div className="error-message">{error}</div>}
         
         <form onSubmit={handleSubmit}>
@@ -63,7 +63,7 @@ export default function Login({ onToggle }) {
           </div>
 
           <div className="form-group">
-            <label>Jelszó</label>
+            <label>Password</label>
             <input
               type="password"
               value={password}
@@ -74,14 +74,14 @@ export default function Login({ onToggle }) {
           </div>
 
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Bejelentkezés...' : 'Bejelentkezés'}
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
 
         <p className="auth-toggle">
-          Nincs még fiókod? 
+          Don't have an account? 
           <button onClick={onToggle} className="btn-link">
-            Regisztrálj
+            Register
           </button>
         </p>
       </div>

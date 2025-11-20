@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import OfflineNotification from './components/OfflineNotification';
 
 function AuthFlow() {
   const [showLogin, setShowLogin] = useState(true);
@@ -23,6 +24,7 @@ function App() {
   return (
     <AuthProvider>
       <AuthFlow />
+      <OfflineNotification />
     </AuthProvider>
   );
 }

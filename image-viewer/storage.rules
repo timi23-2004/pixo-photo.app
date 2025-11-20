@@ -26,6 +26,20 @@ service firebase.storage {
       allow delete: if isOwner(userId);
     }
     
+    // Eredeti képek mappa
+    match /users/{userId}/images/original/{fileName} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(userId) && isValidImage();
+      allow delete: if isOwner(userId);
+    }
+    
+    // Thumbnail képek mappa (Function írja, mindenki olvashatja)
+    match /users/{userId}/images/thumbnails/{fileName} {
+      allow read: if true;
+      allow write: if false; // Csak a Function írhat ide
+      allow delete: if isOwner(userId);
+    }
+    
     // Profilképek - users/{userId}/profile/{fileName}
     match /users/{userId}/profile/{fileName} {
       allow read: if true; // Profilképek publikusan olvashatók

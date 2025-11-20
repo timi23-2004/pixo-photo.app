@@ -14,17 +14,17 @@ export default function Register({ onToggle }) {
     e.preventDefault();
     
     if (!email || !password || !confirmPassword) {
-      setError('Kérlek töltsd ki az összes mezőt');
+      setError('Please fill all fields');
       return;
     }
 
     if (password !== confirmPassword) {
-      setError('A jelszavak nem egyeznek');
+      setError('Passwords do not match');
       return;
     }
 
     if (password.length < 6) {
-      setError('A jelszónak legalább 6 karakter hosszúnak kell lennie');
+      setError('Password must be at least 6 characters');
       return;
     }
 
@@ -56,7 +56,7 @@ export default function Register({ onToggle }) {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Regisztráció</h2>
+        <h2>Register</h2>
         {error && <div className="error-message">{error}</div>}
         
         <form onSubmit={handleSubmit}>
@@ -72,7 +72,7 @@ export default function Register({ onToggle }) {
           </div>
 
           <div className="form-group">
-            <label>Jelszó</label>
+            <label>Password</label>
             <input
               type="password"
               value={password}
@@ -83,7 +83,7 @@ export default function Register({ onToggle }) {
           </div>
 
           <div className="form-group">
-            <label>Jelszó megerősítése</label>
+            <label>Confirm Password</label>
             <input
               type="password"
               value={confirmPassword}
@@ -94,14 +94,14 @@ export default function Register({ onToggle }) {
           </div>
 
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Regisztráció...' : 'Regisztráció'}
+            {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
 
         <p className="auth-toggle">
-          Már van fiókod? 
+          Already have an account? 
           <button onClick={onToggle} className="btn-link">
-            Jelentkezz be
+            Login
           </button>
         </p>
       </div>

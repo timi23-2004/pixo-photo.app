@@ -36,30 +36,41 @@ export default function ImageUpload({ onUploadSuccess }) {
       setUploading(true);
       setError('');
 
-      // Lorem Picsum random kép URL generálása (400-800px szélesség, 300-600px magasság)
-      const width = Math.floor(Math.random() * 400) + 400;
-      const height = Math.floor(Math.random() * 300) + 300;
-      const randomId = Math.floor(Math.random() * 1000);
-      const loremPicsumURL = `https://picsum.photos/id/${randomId}/${width}/${height}`;
+      // Egyedi fájlnév generálása
+      const timestamp = Date.now();
+      const fileName = `${timestamp}_${selectedFile.name}`;
+      const storagePath = `users/${user.uid}/images/original/${fileName}`;
 
-      // Csak metaadatok mentése Firestore-ba (nem töltünk fel Storage-ba)
+      // Feltöltés Firebase Storage-ba (eredeti méret)
+      const storageRef = ref(storage, storagePath);
+      await uploadBytes(storageRef, selectedFile);
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // Thumbnail path (Firebase Function fogja létrehozni)
+      const thumbnailPath = `users/${user.uid}/images/thumbnails/thumb_${fileName}`;
+
+      // Metaadatok mentése Firestore-ba
       await addDoc(collection(db, 'images'), {
         userId: user.uid,
         userEmail: user.email,
         fileName: selectedFile.name,
-        storagePath: null, // Nincs Storage path
-        downloadURL: loremPicsumURL,
-        uploadedAt: serverTimestamp()
+        storagePath: storagePath,
+        thumbnailPath: thumbnailPath,
+        downloadURL: downloadURL, // HD verzió
+        thumbnailURL: null, // Function fogja frissíteni
+        uploadedAt: serverTimestamp(),
+        processed: false // Jelzi hogy még nincs thumbnail
       });
 
       // Reset
       setSelectedFile(null);
       setPreview(null);
       if (onUploadSuccess) onUploadSuccess();
+      alert('Image uploaded! Thumbnail generation in progress...');
       
     } catch (err) {
-      console.error('Feltöltési hiba:', err);
-      setError('Hiba történt a feltöltés során');
+      console.error('Upload error:', err);
+      setError('Upload error occurred');
     } finally {
       setUploading(false);
     }
@@ -67,7 +78,7 @@ export default function ImageUpload({ onUploadSuccess }) {
 
   return (
     <div className="upload-container">
-      <h2>Új kép feltöltése</h2>
+      <h2>Upload new image</h2>
       
       {error && <div className="error-message">{error}</div>}
       
@@ -86,7 +97,7 @@ export default function ImageUpload({ onUploadSuccess }) {
           ) : (
             <div className="upload-placeholder">
               <span className="upload-icon">📷</span>
-              <p>Kattints vagy húzd ide a képet</p>
+              <p>Click or drag image here</p>
               <p className="upload-hint">Max 10MB, JPG, PNG, GIF</p>
             </div>
           )}

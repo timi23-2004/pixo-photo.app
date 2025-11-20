@@ -10,7 +10,7 @@ export default function ProfilePage() {
     try {
       await signOut();
     } catch (error) {
-      console.error('Kijelentkezési hiba:', error);
+      console.error('Logout error:', error);
     }
   };
 
@@ -23,16 +23,16 @@ export default function ProfilePage() {
           </div>
           <div className="profile-details">
             <h2>{user?.email}</h2>
-            <p className="profile-joined">Csatlakozott a közösséghez</p>
+            <p className="profile-joined">Joined the community</p>
           </div>
         </div>
         <button onClick={handleSignOut} className="btn-signout">
-          Kijelentkezés
+          Logout
         </button>
       </div>
 
       <div className="profile-content">
-        <h3>Feltöltött képeim</h3>
+        <h3>My Uploads</h3>
         <ImageGallery viewMode="my" />
       </div>
     </div>

@@ -1,12 +1,18 @@
+
 :root {
+  --g1: #ffe0ef;
+  --g2: #ffd1e1;
+  --g3: #fff0f6;
+  --g4: #f9c6d3;
+  --g5: #f7b6c9;
+  --bg: #fff0f6;
+  --text: #222;
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  color: var(--text);
+  background-color: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,10 +30,24 @@ a:hover {
 
 body {
   margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  width: 100%;
-  height: 100vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background:
+    linear-gradient(45deg, var(--g1), var(--g2), var(--g3), var(--g4), var(--g5)),
+    var(--bg);
+  background-size: 300% 300%, auto;
+  background-attachment: fixed, scroll;
+  animation: gradientAnimation 10s ease infinite;
+  line-height: 1.5;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%, center; }
+  50% { background-position: 100% 50%, center; }
+  100% { background-position: 0% 50%, center; }
 }
 
 h1 {

@@ -33,6 +33,14 @@ service cloud.firestore {
       allow update, delete: if false;
     }
     
+    // Vásárlások (HD képek) - csak saját vásárlások olvasása/írása
+    match /purchases/{purchaseId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      // Update/delete tiltva (csak létrehozás engedélyezett)
+      allow update, delete: if false;
+    }
+    
     // Minden más tiltva (alapértelmezett biztonság)
     match /{document=**} {
       allow read, write: if false;

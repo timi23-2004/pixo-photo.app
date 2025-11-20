@@ -1,5 +1,6 @@
 .profile-header {
-  background: white;
+  background: rgba(245, 245, 245, 0.9);
+  backdrop-filter: blur(10px);
   padding: 40px;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -44,7 +45,7 @@
 
 .btn-signout {
   padding: 12px 32px;
-  background-color: white;
+  background-color: #f5f5f5;
   border: 2px solid #ddd;
   border-radius: 24px;
   color: #666;
