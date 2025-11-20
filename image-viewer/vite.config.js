@@ -1,6 +1,7 @@
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default {
+  base: '/pixo-photo.app/',
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
@@ -19,7 +20,7 @@ export default {
             type: "image/png"
           }
         ],
-        start_url: "/",
+        start_url: "/pixo-photo.app/",
         display: "standalone",
       }
     })
