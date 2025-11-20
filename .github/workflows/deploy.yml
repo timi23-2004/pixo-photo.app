@@ -1,9 +1,8 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (manual)
 
 on:
-  push:
-    branches:
-      - main
+  # Disabled on push to avoid conflicts; run manually if needed
+  workflow_dispatch:
 
 permissions:
   contents: read
